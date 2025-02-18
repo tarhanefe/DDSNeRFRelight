@@ -1,0 +1,10 @@
+
+torch
+torchvision
+torchaudio
+diffusers
+transformers
+controlnet-aux
+accelerate
+xformers
+pillow
