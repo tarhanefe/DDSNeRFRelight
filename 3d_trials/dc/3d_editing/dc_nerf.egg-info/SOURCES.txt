@@ -1,0 +1,8 @@
+pyproject.toml
+dc_nerf/dc_config.py
+dc_nerf.egg-info/PKG-INFO
+dc_nerf.egg-info/SOURCES.txt
+dc_nerf.egg-info/dependency_links.txt
+dc_nerf.egg-info/entry_points.txt
+dc_nerf.egg-info/requires.txt
+dc_nerf.egg-info/top_level.txt
