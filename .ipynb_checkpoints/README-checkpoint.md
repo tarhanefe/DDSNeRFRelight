@@ -77,10 +77,8 @@ We propose decomposing the DDS gradient into low‑ and high‑frequency compone
 - `diffusers` & `transformers` (Hugging Face)  
 - `pywavelets` for DWT operations  
 
-\`\`\`bash
-pip install numpy==1.26.4
-pip install gsplat==0.1.6
-pip install huggingface_hub==0.21.0
-pip install tyro==0.6.6
-\`\`\`
-
+```bash
+pip install numpy==1.26.4 \
+  gsplat==0.1.6 \
+  huggingface_hub==0.21.0 \
+  tyro==0.6.6
