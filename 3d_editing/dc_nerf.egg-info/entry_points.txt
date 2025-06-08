@@ -1,6 +1,0 @@
-[nerfstudio.method_configs]
-dc = dc_nerf.dc_config:dc_method
-dc_refinement = dc_nerf.dc_config:refinement_method
-dc_splat = dc_nerf.dc_config:dc_splat_method
-dc_splat_refinement = dc_nerf.dc_config:dc_splat_refinement_method
-nerfacto = dc_nerf.dc_config:nerfacto_method
