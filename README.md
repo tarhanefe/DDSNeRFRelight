@@ -114,3 +114,33 @@ ns-train dc --data ./gardenspheres_n --load-dir ./outputs/gardenspheres_n/nerfac
 ```
 
 ---
+
+
+## 🧾 Configuration Parameters
+
+The following parameters in `DCConfig` control the behavior of the diffusion-guided editing pipeline:
+
+| Parameter                  | Description |
+|---------------------------|-------------|
+| `sd_pretrained_model_or_path` | Path to the pre-trained Stable Diffusion model. |
+| `num_inference_steps`     | Number of diffusion steps used during inference. |
+| `min_step_ratio` / `max_step_ratio` | Defines the range of denoising steps for guided editing. |
+| `src_prompt` / `tgt_prompt` | Text prompts for original and target scene descriptions. |
+| `log_step`                | Interval (in iterations) for logging progress. |
+| `guidance_scale`         | Strength of text guidance during editing. |
+| `device`                  | Device used for computation (typically `"cuda"`). |
+| `image_guidance_scale`    | Balances pixel-level and semantic guidance. |
+| `psi`, `chi`, `delta`, `gamma` | Hyperparameters controlling loss terms and step size dynamics. (Only for DC) |
+| `freeu_b1`, `freeu_b2`     | FreeU enhancement ratios for low-frequency channels. (Only for DC)|
+| `freeu_s1`, `freeu_s2`     | FreeU suppression ratios for skip connections. (Only for DC)|
+| `wavelet_filtering`       | Enable/disable wavelet-based filtering for gradients. |
+| `wavelet_name`            | Name of the wavelet used (e.g., `haar`, `db2`, `sym4`). |
+| `wavelet_level`           | Decomposition level of the wavelet transform. |
+| `n_patches`               | Number of random image patches used for DDS/CUT loss. (Only for CDS)|
+| `patch_size`              | Size of each patch (e.g., `(1, 2)` for long-and-thin patches). (Only for CDS)|
+| `w_dds`, `w_cut`          | Weights for DDS and CUT loss components. (Only for CDS)|
+| `scheduler_pretrained_path` | Optional path to custom DDIM scheduler. |
+| `loss_multiplier`         | Scaling factor for the combined DDS/CUT loss. (Only for CDS)|
+| `pipeline`                | Type of editing pipeline ('cds' or 'dc'). |
+
+These parameters are set inside the editing pipeline and can be overridden via CLI using `--pipeline.dc.<parameter>` flags.
