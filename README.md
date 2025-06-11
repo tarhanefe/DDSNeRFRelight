@@ -101,18 +101,16 @@ ns-train nerfacto --data ./gardenspheres_n nerfstudio-data --downscale-factor 8
 Following that use the given command to edit the scene. 
 
 ```bash
-ns-train dc  --data ./gardenspheres_n --load-dir ./outputs/gardenspheres_n/nerfacto/2025-03-30_013255/nerfstudio_models/ \
---pipeline.dc.src_prompt "a photo of two reflective spheres" \
---pipeline.dc.tgt_prompt "a photo of two reflective green spheres" \
---pipeline.dc.pipeline dc \ 
---pipeline.dc.w_dds 1.0 \
---pipeline.dc.w_cut 3.0 \
---pipeline.dc.loss_multiplier 0.02 \ 
---pipeline.dc.wavelet_filtering True \
---pipeline.dc.wavelet_name db4 \
---pipeline.dc.wavelet_level 3 \
---vis viewer \
---max_num_iterations 3000   nerfstudio-data --downscale-factor 8
+ns-train dc --data ./gardenspheres_n --load-dir ./outputs/gardenspheres_n/nerfacto/2025-03-30_013255/nerfstudio_models/ \
+ --pipeline.dc.src_prompt "a photo of two reflective spheres" \
+ --pipeline.dc.tgt_prompt "a photo of two reflective green spheres" \
+ --vis viewer \
+ --max_num_iterations 200 \
+ --pipeline.dc.pipeline dc \
+ --pipeline.dc.wavelet_filtering True \
+ --pipeline.dc.wavelet_name db4 \
+ --pipeline.dc.wavelet_level 2 \
+ --pipeline.dc.guidance-scale 7.5 nerfstudio-data --downscale-factor 8
 ```
 
 ---
