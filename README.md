@@ -8,7 +8,7 @@
 ---
 
 <p align="center">
-  <img src="assets/new_pipeline.png" alt="EPFL Logo" height="600"/>
+  <img src="assets/new_pipeline.png" alt="EPFL Logo" width="%100"/>
 </p>
 
 ---
