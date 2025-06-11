@@ -16,7 +16,7 @@ from typing_extensions import Literal
 from dc_nerf.pipelines.base_pipeline import ModifiedVanillaPipeline
 from dc_nerf.data.datamanagers.dc_splat_datamanager import DCSplatDataManagerConfig
 from dc_nerf.data.datamanagers.dc_datamanager import DCDataManagerConfig
-from dc.dc import DC, DCConfig, tensor_to_pil
+from dc.dc import DCConfig, tensor_to_pil
 from dc.utils.imageutil import merge_images
 from dc.utils.sysutil import clean_gpu
 
@@ -58,6 +58,14 @@ class DCPipeline(ModifiedVanillaPipeline):
         )
         self.config.dc.device = self.dc_device
         self.use_wandb = kwargs.get("wandb_enabled", False)
+        if self.config.dc.pipeline == "cds":
+            from dc.cds import DC
+            self.config.dc.sd_pretrained_model_or_path = "CompVis/stable-diffusion-v1-4"
+            print("Using CDS backend") 
+        elif self.config.dc.pipeline == "dc":
+            from dc.dc import DC
+            self.config.dc.sd_pretrained_model_or_path = "timbrooks/instruct-pix2pix"
+            print("Using DreamCatalyst backend") 
         
         self.dc = DC(self.config.dc)
         # Caching source's x0
@@ -92,6 +100,9 @@ class DCPipeline(ModifiedVanillaPipeline):
         l = min(h, w)
         h = int(h * 512 / l)
         w = int(w * 512 / l)  # resize an image such that the smallest length is 512.
+        alpha = 2
+        h = 256*alpha
+        w = 256*alpha
         original_image_512 = F.interpolate(original_image, size=(h, w), mode="bilinear")
         rendered_image_512 = F.interpolate(rendered_image, size=(h, w), mode="bilinear")
 
