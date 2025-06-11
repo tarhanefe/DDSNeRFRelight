@@ -69,6 +69,14 @@ pip install gsplat==0.1.6
 pip install huggingface_hub==0.21.0
 pip install tyro==0.6.6
 ```
+
+In case the following command won't work. Manually register the dc method to the datamanager config in the main environment nerfstudio library. 
+
+```bash 
+ns-train -h
+
+```
+
 ---
 
 ## 📂 Dataset
