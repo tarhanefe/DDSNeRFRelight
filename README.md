@@ -117,17 +117,3 @@ ns-train dc  --data ./gardenspheres_n \
 ```
 
 ---
-
-## 💡 Tips
-
-| Flag                                | Description                                           |
-|-------------------------------------|-------------------------------------------------------|
-| `--pipeline.dc.src_prompt`          | Description of the original scene                    |
-| `--pipeline.dc.tgt_prompt`          | Target scene description for relighting              |
-| `--pipeline.dc.guidance-scale`      | Controls how strongly the text guides the edit       |
-| `--pipeline.dc.wavelet_filtering`   | Enable/disable wavelet filtering                     |
-| `--pipeline.dc.wavelet_name`        | Choose wavelet family (e.g., `haar`, `db2`, `sym4`)  |
-| `--max_num_iterations`              | Max training steps                                   |
-| `--load-dir`                        | Load pretrained NeRF checkpoint                      |
-
----
