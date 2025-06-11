@@ -122,7 +122,6 @@ The following parameters in `DCConfig` control the behavior of the diffusion-gui
 
 | Parameter                  | Description |
 |---------------------------|-------------|
-| `sd_pretrained_model_or_path` | Path to the pre-trained Stable Diffusion model. |
 | `num_inference_steps`     | Number of diffusion steps used during inference. |
 | `min_step_ratio` / `max_step_ratio` | Defines the range of denoising steps for guided editing. |
 | `src_prompt` / `tgt_prompt` | Text prompts for original and target scene descriptions. |
