@@ -8,7 +8,7 @@
 ---
 
 <p align="center">
-  <img src="assets/new_pipeline.png" alt="EPFL Logo" height="100"/>
+  <img src="assets/new_pipeline.png" alt="EPFL Logo" height="600"/>
 </p>
 
 ---
@@ -44,21 +44,33 @@ git clone https://github.com/tarhanefe/ivrl-relight.git
 cd ivrl-relight
 ```
 
-Then install the following: 
-
-
-
-Or install minimal dependencies manually:
+Create a conda environment
 
 ```bash
-pip install torch torchvision diffusers==0.27.0 transformers==4.39.3
-pip install numpy==1.26.4 gsplat==0.1.6 pytorch_wavelets opencv-python tyro
+conda create -n relight python=3.9
+conda activate relight
 ```
 
-> Optional: For logging
+Then, install the required packages.
+
 ```bash
-pip install wandb
+pip install torch==2.1.2+cu118 torchvision==0.16.2+cu118 --extra-index-url https://download.pytorch.org/whl/cu118
+pip install numpy==1.26.4
+conda install -c "nvidia/label/cuda-11.8.0" cuda-toolkit
+pip install ninja git+https://github.com/NVlabs/tiny-cuda-nn/#subdirectory=bindings/torch
+pip install -e .
 ```
+For 3D editing, you need to install the following packages.
+
+```bash
+cd 3d_editing
+pip install -e .
+pip install gsplat==0.1.6
+pip install huggingface_hub==0.21.0
+pip install tyro==0.6.6
+```
+
+
 
 ---
 
