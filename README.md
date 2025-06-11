@@ -106,9 +106,9 @@ ns-train dc  --data ./gardenspheres_n \
 --pipeline.dc.src_prompt "a photo of two reflective spheres" \
 --pipeline.dc.tgt_prompt "a photo of two reflective green spheres" \
 --pipeline.dc.pipeline dc \ 
---pipeline.dc.w_dds: float = 1.0 \
---pipeline.dc.w_cut: float = 3.0 \
---pipeline.dc.loss_multiplier: float = 0.02 \ 
+--pipeline.dc.w_dds 1.0 \
+--pipeline.dc.w_cut 3.0 \
+--pipeline.dc.loss_multiplier 0.02 \ 
 --pipeline.dc.wavelet_filtering True \
 --pipeline.dc.wavelet_name db4 \
 --pipeline.dc.wavelet_level 3 \
