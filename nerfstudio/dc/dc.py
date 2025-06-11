@@ -1,5 +1,5 @@
+from typing import Union, Optional, List, Tuple, Dict, Callable, Any
 from dataclasses import dataclass, field
-
 import numpy as np
 import torch
 import torch.nn as nn
@@ -19,32 +19,33 @@ from pytorch_wavelets import DWTForward, DWTInverse
 @dataclass
 class DCConfig:
     sd_pretrained_model_or_path: str = "timbrooks/instruct-pix2pix"
-
     num_inference_steps: int = 500
     min_step_ratio: float = 0.2
     max_step_ratio: float = 0.9
-
     src_prompt: str = "a photo of a sks man" # deneme
     tgt_prompt: str = "a photo of a Batman"
-
     log_step: int = 10
     guidance_scale: float = 7.5
     device: torch.device = torch.device("cuda")
     image_guidance_scale: float = 1.5
-
     psi: float=0.075
     chi = math.log(0.1)
     delta: float=0.2
     gamma: float=0.8
-
     freeu_b1: float=1.1
     freeu_b2: float=1.1
     freeu_s1: float=0.9
     freeu_s2: float=0.2
-
     wavelet_filtering: bool = False          # Toggle wavelet-based filtering
     wavelet_name: str = "db2"                # Wavelet type (e.g., 'db1', 'haar', 'sym2')
     wavelet_level: int = 1
+    n_patches: int = 256
+    patch_size: list = (1, 2)
+    w_dds: float = 1.0
+    w_cut: float = 3.0
+    scheduler_pretrained_path: Optional[str] = None
+    loss_multiplier: float = 0.02
+    pipeline: str = "cds"
 
 
 class DC(object):
@@ -291,7 +292,7 @@ class DC(object):
         w_DDS = self.config.delta + self.config.gamma * (t_normalized ** (1 / math.e))
         dds_grad = w_DDS * (eps["tgt"] - eps["src"])
         latent_reg = self.config.psi * (math.exp(t_normalized)) * (tgt_x0 - src_x0)
-        
+
         if self.config.wavelet_filtering:
             dds_grad = self.wave_grad(
                 dds_grad,
@@ -304,7 +305,6 @@ class DC(object):
                 
         target = (tgt_x0 - grad).detach()
         loss = 0.5 * F.mse_loss(tgt_x0, target, reduction=reduction) / batch_size 
-        
         
         if self.use_wandb:
             import wandb

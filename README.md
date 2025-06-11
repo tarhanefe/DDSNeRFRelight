@@ -1,84 +1,136 @@
+
 # Large-Scale 3D Scene Relighting using Pre‑Trained Diffusion Models
 
 **COM507 – Optional Research Project in Communication Systems**  
-**Author:** Efe Tarhan, MSc Student in Communication Systems 
-**Supervisor:** Dongqing Wang, IVRL. 
+**Author:** Efe Tarhan, MSc Student in Communication Systems  
+**Supervisor:** Dongqing Wang, IVRL
 
 ---
 
 <p align="center">
-  <img src="assets/logo-epfl.png" alt="EPFL Logo" />
+  <img src="assets/new_pipeline.png" alt="EPFL Logo" height="100"/>
 </p>
 
+---
 
-## Table of Contents
+## 📁 Folder Structure
 
-1. [Project Overview](#project-overview)  
-2. [Background](#background)  
-   - [Score Distillation Sampling (SDS)](#score-distillation-sampling-sds)  
-   - [Delta Denoising Score (DDS)](#delta-denoising-score-dds)  
-   - [DreamCatalyst (2025)](#dreamcatalyst-2025)  
-3. [Problem Definition](#problem-definition)  
-4. [Methodology](#methodology)  
-   - [Wavelet-Based Gradient Filtering](#wavelet-based-gradient-filtering)   
-5. [Prerequisites](#prerequisites)  
+```
+.
+├── README.md
+├── requirements.txt
+├── assets/                          # Diagrams and logos
+├── nerfstudio/3d_editing/dc_nerf/  # NeRF editing module
+│   ├── data/                       # Custom datamanagers & parsers
+│   ├── engine/                     # Trainer
+│   ├── fields/                     # Fields used in models
+│   ├── models/                     # Nerfacto/Splatfacto variants
+│   └── pipelines/                  # Base + DC pipelines
+├── dc/                             # Diffusion controller 
+│   ├── dc.py, 
+|   ├── cds.py                      # Main training logic
+│   ├── dc_unet.py                  # FreeU UNet
+│   └── utils/                      # Wavelet, image, FreeU utils
+```
 
 ---
 
-## Project Overview
+## ⚙️ Installation
 
-This research presents a novel technique for high‑quality, large‑scale 3D scene relighting by combining pre‑trained 2D diffusion models with a wavelet‑based gradient filtering approach. Our method preserves high‑frequency details—such as reflections on objects—while applying target relighting edits to Neural Radiance Fields (NeRFs).
-
----
-
-## Background
-
-### Score Distillation Sampling (SDS)
-- Introduced in **DreamFusion** (Poole et al., ICLR 2023).
-- Uses a frozen Stable Diffusion model; gradients are backpropagated only to the NeRF’s MLP.
-- Allows text‑driven 3D generation but is not optimal for fine‑grained scene editing.
-
-### Delta Denoising Score (DDS)
-- Proposed by Hertz, Aberman & Cohen‑Or (ICCV 2023).
-- Utilizes two identical Stable Diffusion models guided by a **source** and a **target** prompt.
-- Computes the difference between their gradient updates, improving edit quality and reducing artifacts.
-
-### DreamCatalyst (2025)
-- Kim, Lee et al. (ICLR 2025).
-- Builds on DDS by adding an identity‑preservation term:
-  - Emphasizes identity at high noise (early timesteps).
-  - Prioritizes editability at low noise (later timesteps).
-
----
-
-## Problem Definition
-
-Existing DDS‑based methods (including DreamCatalyst) tend to introduce edits across all frequency bands, causing loss of fine, high‑frequency details (e.g., reflections).  
-**Objective:** Develop a robust relighting technique that preserves high‑frequency features in 3D scenes.
-
----
-
-## Methodology
-
-### Wavelet-Based Gradient Filtering
-
-We propose decomposing the DDS gradient into low‑ and high‑frequency components via a discrete wavelet transform (DWT). Only the low‑frequency component is backpropagated during the relighting step:
-
-<p align="center">
-  <img src="assets/pipeline.png" alt="Pipeline" />
-</p>
----
-
-### Prerequisites
-
-- Python 3.8+  
-- PyTorch 1.12+  
-- NeRF framework of your choice (e.g., [instant-ngp](https://github.com/NVlabs/instant-ngp))  
-- `diffusers` & `transformers` (Hugging Face)  
-- `pywavelets` for DWT operations  
+First clone the repository 
 
 ```bash
-pip install numpy==1.26.4 \
-  gsplat==0.1.6 \
-  huggingface_hub==0.21.0 \
-  tyro==0.6.6
+git clone https://github.com/tarhanefe/ivrl-relight.git
+cd ivrl-relight
+```
+
+Then install the following: 
+
+
+
+Or install minimal dependencies manually:
+
+```bash
+pip install torch torchvision diffusers==0.27.0 transformers==4.39.3
+pip install numpy==1.26.4 gsplat==0.1.6 pytorch_wavelets opencv-python tyro
+```
+
+> Optional: For logging
+```bash
+pip install wandb
+```
+
+---
+
+## 🧩 Configuration Example (`DCConfig`)
+
+```python
+DCConfig(
+    sd_pretrained_model_or_path="timbrooks/instruct-pix2pix",
+    num_inference_steps=500,
+    min_step_ratio=0.2,
+    max_step_ratio=0.9,
+    src_prompt="a photo of a sks man",
+    tgt_prompt="a photo of a Batman",
+    guidance_scale=7.5,
+    image_guidance_scale=1.5,
+    psi=0.075,
+    chi=math.log(0.1),
+    delta=0.2,
+    gamma=0.8,
+    freeu_b1=1.1,
+    freeu_b2=1.1,
+    freeu_s1=0.9,
+    freeu_s2=0.2,
+    wavelet_filtering=True,
+    wavelet_name="db2",
+    wavelet_level=1,
+    loss_multiplier=0.02,
+    pipeline="cds"
+)
+```
+
+---
+
+## 🚀 CLI Usage
+
+### 🔧 Standard Command
+
+```bash
+ns-train dc   --data ./gardenspheres_n   --load-dir ./outputs/gardenspheres_n/nerfacto/2025-03-30_013255/nerfstudio_models/   --pipeline.dc.src_prompt "a photo of two reflective spheres"   --pipeline.dc.tgt_prompt "a photo of two reflective green spheres"   --pipeline.dc.pipeline dc   --pipeline.dc.guidance-scale 7.5   --vis viewer   --max_num_iterations 200   nerfstudio-data --downscale-factor 8
+```
+
+---
+
+## 💡 Tips
+
+| Flag                                | Description                                           |
+|-------------------------------------|-------------------------------------------------------|
+| `--pipeline.dc.src_prompt`          | Description of the original scene                    |
+| `--pipeline.dc.tgt_prompt`          | Target scene description for relighting              |
+| `--pipeline.dc.guidance-scale`      | Controls how strongly the text guides the edit       |
+| `--pipeline.dc.wavelet_filtering`   | Enable/disable wavelet filtering                     |
+| `--pipeline.dc.wavelet_name`        | Choose wavelet family (e.g., `haar`, `db2`, `sym4`)  |
+| `--max_num_iterations`              | Max training steps                                   |
+| `--load-dir`                        | Load pretrained NeRF checkpoint                      |
+
+---
+
+## 📊 Results Table
+
+| Scene         | Method       | Reflections Preserved | Color Fidelity | Saturation |
+|---------------|--------------|------------------------|----------------|------------|
+| gardenspheres | Haar, lvl 2  | ✅ Yes                 | ✅ Accurate     | ✅ Vivid    |
+| toycar        | db4, lvl 1   | ✅ Yes                 | ⚠️ Minor fade   | ✅ Solid    |
+| sedan         | Haar, lvl 2  | ✅ Yes                 | ✅ Crisp        | ⚠️ Overshot |
+
+> ✅: Strong results  
+> ⚠️: Minor degradation (but still better than baseline)
+
+---
+
+## 📝 Citation
+
+> Efe Tarhan, *Large-Scale 3D Scene Relighting using Pre‑Trained Diffusion Models*, COM507 Project, EPFL, 2025.
+
+---
