@@ -101,8 +101,7 @@ ns-train nerfacto --data ./gardenspheres_n nerfstudio-data --downscale-factor 8
 Following that use the given command to edit the scene. 
 
 ```bash
-ns-train dc  --data ./gardenspheres_n \
---load-dir ./outputs/gardenspheres_n/nerfacto/2025-03-30_013255/nerfstudio_models/ \
+ns-train dc  --data ./gardenspheres_n --load-dir ./outputs/gardenspheres_n/nerfacto/2025-03-30_013255/nerfstudio_models/ \
 --pipeline.dc.src_prompt "a photo of two reflective spheres" \
 --pipeline.dc.tgt_prompt "a photo of two reflective green spheres" \
 --pipeline.dc.pipeline dc \ 
