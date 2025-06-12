@@ -1,7 +1,7 @@
 <h1 align="center">Large-Scale 3D Scene Relighting using Pre‑Trained Diffusion Models</h1>
 
 <p align="center"><strong>COM507 – Optional Research Project in Communication Systems</strong></p>
-<p align="center"><strong>Author:</strong> Efe Tarhan, MSc Student in Communication Systems</p>
+<p align="center">Efe Tarhan, MSc Student in Communication Systems</p>
 <p align="center"><strong>Supervisor:</strong> Dongqing Wang, Image and Visual Representation Lab (IVRL)</p>
 
 ---
