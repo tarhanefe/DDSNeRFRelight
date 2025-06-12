@@ -1,9 +1,8 @@
+<h1 align="center">Large-Scale 3D Scene Relighting using Pre‑Trained Diffusion Models</h1>
 
-# Large-Scale 3D Scene Relighting using Pre‑Trained Diffusion Models
-
-**COM507 – Optional Research Project in Communication Systems**  
-**Author:** Efe Tarhan, MSc Student in Communication Systems  
-**Supervisor:** Dongqing Wang, IVRL
+<p align="center"><strong>COM507 – Optional Research Project in Communication Systems</strong></p>
+<p align="center"><strong>Author:</strong> Efe Tarhan, MSc Student in Communication Systems</p>
+<p align="center"><strong>Supervisor:</strong> Dongqing Wang, Image and Visual Representation Lab (IVRL)</p>
 
 ---
 
@@ -13,6 +12,12 @@
 
 ---
 
+## 📝 Project Description
+
+This repository implements a NeRF editing framework that enables localized relighting and texture edits using pretrained diffusion models. Built on the DDS pipeline, it integrates wavelet-based gradient filtering to preserve reflections and fine appearance details during editing. The framework keeps scene geometry fixed after NeRF training, ensuring structural consistency, and enhances edits with surface normal prediction for improved view-dependent rendering. The result is high-fidelity, semantically guided 3D scene edits with strong reflection and color consistency.
+
+
+---
 ## 📁 Folder Structure
 
 ```
