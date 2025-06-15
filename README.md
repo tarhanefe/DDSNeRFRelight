@@ -129,6 +129,7 @@ The following parameters in `DCConfig` control the behavior of the diffusion-gui
 | Parameter                  | Description |
 |---------------------------|-------------|
 | `num_inference_steps`     | Number of diffusion steps used during inference. |
+| `pipeline`                | Type of editing pipeline ('cds' or 'dc'). |
 | `min_step_ratio` / `max_step_ratio` | Defines the range of denoising steps for guided editing. |
 | `src_prompt` / `tgt_prompt` | Text prompts for original and target scene descriptions. |
 | `log_step`                | Interval (in iterations) for logging progress. |
@@ -146,6 +147,5 @@ The following parameters in `DCConfig` control the behavior of the diffusion-gui
 | `w_dds`, `w_cut`          | Weights for DDS and CUT loss components. (Only for CDS)|
 | `scheduler_pretrained_path` | Optional path to custom DDIM scheduler. |
 | `loss_multiplier`         | Scaling factor for the combined DDS/CUT loss. (Only for CDS)|
-| `pipeline`                | Type of editing pipeline ('cds' or 'dc'). |
 
 These parameters are set inside the editing pipeline and can be overridden via CLI using `--pipeline.dc.<parameter>` flags.
